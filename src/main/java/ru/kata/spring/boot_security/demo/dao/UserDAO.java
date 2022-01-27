@@ -2,7 +2,6 @@ package ru.kata.spring.boot_security.demo.dao;
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 
 import javax.persistence.EntityManager;
@@ -21,7 +20,11 @@ public class UserDAO {
 
     public User show(int id) {
         return entityManager.find(User.class, id);
+    }
 
+    public User findUserByName(String name) {
+        return entityManager.createQuery("select u from User u where u.name = :name", User.class)
+                .setParameter("name", name).getSingleResult();
     }
 
     @Transactional

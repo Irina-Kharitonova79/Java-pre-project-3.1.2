@@ -6,7 +6,9 @@
     <title>New user</title>
 </head>
 <body>
-
+<a href="/logout" id="log_out">LOGOUT</a>
+<br/>
+<br/>
 <form th:method="POST" th:action="@{/admin}" th:object="${user}">
     <label for="name">Enter name: </label>
     <input type="text" th:field="*{name}" id="name"/>

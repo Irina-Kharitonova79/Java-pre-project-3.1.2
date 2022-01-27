@@ -60,3 +60,8 @@ tr > :first-child {
 tr > :first-child {
     box-shadow: inset 0px 1px black;
 }
+
+#log_out {
+    position: absolute;
+    right: 20px;
+}
