@@ -44,7 +44,7 @@ public class User implements UserDetails {
     @NotEmpty(message = "Password should not be empty")
     private String password;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+    @ManyToMany(cascade = {CascadeType.MERGE,
             CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role"
@@ -56,16 +56,14 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(int id, String name, String surname, int age, String email) {
-        this.id = id;
+    public User(String name, String surname, int age, String email) {
         this.name = name;
         this.surname = surname;
         this.age = age;
         this.email = email;
     }
 
-    public User(int id, String name, String surname, int age, String email, String password) {
-        this.id = id;
+    public User(String name, String surname, int age, String email, String password) {
         this.name = name;
         this.surname = surname;
         this.age = age;
