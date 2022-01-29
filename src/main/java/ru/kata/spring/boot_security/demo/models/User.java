@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.models;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -52,6 +53,13 @@ public class User implements UserDetails {
             , inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<Role> roles;
+
+    public boolean isAdmin() {
+        if (CollectionUtils.isEmpty(roles)) {
+            return false;
+        }
+        return roles.stream().anyMatch(r -> r.getRoleName().equals("ROLE_ADMIN"));
+    }
 
     public User() {
     }

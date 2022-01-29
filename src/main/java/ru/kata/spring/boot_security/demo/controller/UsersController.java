@@ -32,8 +32,10 @@ public class UsersController {
 
 
     @GetMapping("/admin")
-    public String index(Model model) {
+    public String index(Model model, Authentication authentication) {
         model.addAttribute("users", userService.index());
+        User user = (User) authentication.getPrincipal();
+        model.addAttribute("user", user);
         return "admin/all_users";
     }
 

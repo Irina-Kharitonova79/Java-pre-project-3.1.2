@@ -1,50 +1,137 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>All users</title>
-    <link rel="stylesheet" media="screen" href="/css/my.css">
+    <title>Admin panel</title>
+    <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
 </head>
+
 <body>
-<a href="/logout" id="log_out">LOGOUT</a>
-<br/>
-<br/>
-<table border="1">
-    <tr>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Surname</th>
-        <th>Age</th>
-        <th>Email</th>
-        <th>Password</th>
-        <th>Role</th>
-        <th>Operation</th>
-        <th>Operation</th>
 
-    </tr>
-    <tr th:each="user : ${users}">
-        <td><a th:href="@{/admin/{id}(id=${user.getId()})}" th:text="${user.getId()}">user</a></td>
-        <td th:text="${user.getName()}"></td>
-        <td th:text="${user.getSurname()}"></td>
-        <td th:text="${user.getAge()}"></td>
-        <td th:text="${user.getEmail()}"></td>
-        <td th:text="${user.getPassword()}"></td>
-        <td th:text="${user.getRoleList()}"></td>
-        <td><a th:href="@{/admin/{id}/edit(id=${user.getId()})}">Edit</a></td>
-        <td>
-            <form th:method="DELETE" th:action="@{/admin/{id}(id=${user.getId()})}">
-                <input type="submit" value="Delete"/>
-            </form>
-        </td>
-    </tr>
-</table>
+<!--Верхняя панель (навбар) с именем пользователя и его ролями + ссылка на Logout-->
+<nav class="navbar-expand-lg fixed-top navbar-dark bg-dark">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-<br/>
-<hr/>
+        <!--        Имя и фамилия пользователя со списком его ролей в левой части навбара-->
+        <ul class="navbar-nav mr-auto ml-3">
+            <a class="navbar-brand font-weight-bold bg-dark text-white " th:text="${user.getName()}">VALUE</a>
+            <a class="navbar-brand font-weight-bold bg-dark text-white" th:text="${user.getSurname()}">VALUE</a>
+            <a class="navbar-brand bg-dark text-white"> with roles: </a>
+            <a class="navbar-brand bg-dark text-white" th:text="${user.getRoleList()}"></a>
+        </ul>
 
-<a href="/admin/new">Create new user</a>
+        <!--        Ссылка на Logout в правой части навбара-->
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!--Боковая панель для обращения к двум вариантам таблицы-->
+<div class="row">
+
+    <div class="col-xl-1 bg-white mt-5">
+        <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#all_users">Admin</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#users">User</a>
+            </li>
+        </ul>
+    </div>
+
+    <!--    Выделяем ряды для отображения информации в карточках по группе пользователей-->
+
+    <!-- отзывчивые столбцы одинаковой ширины, могут быть sm, md, lg или xl. bg-фон -->
+    <div class="col-xl-11 bg-light">
+        <!--                tab-content - вкладка-контент-->
+        <div class="tab-content mr-3 ml-3">
+
+<!--            Чтобы вкладки постепенно появлялись, добавьте класс .fade в каждый элемент класса .tab-pane.-->
+<!--            Первая вкладка .tab-pane также должна иметь класс .show, чтобы первоначальный контент был видимым.-->
+<!--            tab-pane - панель вкладок-->
+            <div class="tab-pane fade show active" id="AllUsersTable">
+                <h1>all_users</h1>
+<!--                nav-tabs - навигационные вкладки-->
+                <ul class="nav nav-tabs">
+<!--                    nav-item - элемент навигации-->
+                    <li class="nav-item">
+<!--                        nav-link - навигационная ссылка-->
+                        <a class="nav-link active" data-toggle="tab" href="#UsersTable">Users table</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#NewUser">New User</a>
+                    </li>
+                </ul>
+<!--                tab-content - вкладка-контент-->
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="UsersTable">
+                        <div class="card">
+                            <h3 class="card-header">All users</h3>
+
+<!--                            table-striped - полосатый-->
+                            <table class="table table-striped mr-3 ml-3">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Age</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="user : ${users}">
+                                    <td th:text="${user.getId()}"></td>
+                                    <td th:text="${user.getName()}"></td>
+                                    <td th:text="${user.getSurname()}"></td>
+                                    <td th:text="${user.getAge()}"></td>
+                                    <td th:text="${user.getEmail()}"></td>
+                                    <td th:text="${user.getRoleList()}"></td>
+                                    <!--    Редактирование юзера-->
+                                    <!--     Button trigger modal - Модальный триггер кнопки-->
+                                    <!--     data-target - цель данных-->
+                                    <td>
+                                        <button type="button" th:href="@{/admin/{id}/edit(id=${user.getId()})}"
+                                                class="btn btn-primary" data-toggle="modal"
+                                                data-target="#exampleModalEdit">
+                                            Edit
+                                        </button>
+                                    </td>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 
 
 </body>
+
+
+<!--<td>-->
+<!--    <form th:method="DELETE" th:action="@{/admin/{id}(id=${user.getId()})}">-->
+<!--        <input type="submit" value="Delete"/>-->
+<!--    </form>-->
+<!--</td>-->
+
+<!--<a href="/admin/new">Create new user</a>-->
+
+
+
 </html>
