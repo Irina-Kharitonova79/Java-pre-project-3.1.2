@@ -5,7 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.RoleServiceImpl;
+import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 import java.util.Arrays;
@@ -16,8 +18,8 @@ public class SpringBootSecurityDemoApplication {
 	public static void main(String[] args) {
 		ConfigurableApplicationContext context = SpringApplication.run(SpringBootSecurityDemoApplication.class, args);
 
-		UserServiceImpl userService = context.getBean(UserServiceImpl.class);
-		RoleServiceImpl roleService = context.getBean(RoleServiceImpl.class);
+		UserService userService = context.getBean(UserService.class);
+		RoleService roleService = context.getBean(RoleService.class);
 
 		Role roleAdmin = new Role("ROLE_ADMIN");
 		roleService.saveRole(roleAdmin);
