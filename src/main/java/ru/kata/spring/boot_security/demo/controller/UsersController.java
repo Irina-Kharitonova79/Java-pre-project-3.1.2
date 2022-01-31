@@ -8,7 +8,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.RoleServiceImpl;
+import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 import javax.validation.Valid;
@@ -20,9 +22,9 @@ import java.util.List;
 @RequestMapping()
 public class UsersController {
 
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
-    private final RoleServiceImpl roleService;
+    private final RoleService roleService;
 
     @Autowired
     public UsersController(UserServiceImpl userService, RoleServiceImpl roleService) {
