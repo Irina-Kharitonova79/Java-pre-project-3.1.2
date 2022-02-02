@@ -5,10 +5,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,27 +18,18 @@ public class User implements UserDetails {
     private int id;
 
     @Column(name = "name")
-    @PrimaryKeyJoinColumn
-    @NotEmpty(message = "Name should not be empty")
-    @Size(min = 1, max = 32, message = "Name should be between 1 and 32 characters")
     private String name;
 
     @Column(name = "surname")
-    @NotEmpty(message = "Surname should not be empty")
-    @Size(min = 1, max = 32, message = "Surname should be between 1 and 32 characters")
     private String surname;
 
     @Column(name = "age")
-    @Min(value = 0, message = "Age should be greater then 0")
     private int age;
 
     @Column(name = "email")
-    @NotEmpty(message = "Email should not be empty")
-    @Email(message = "Email should be valid")
     private String email;
 
     @Column(name = "password")
-    @NotEmpty(message = "Password should not be empty")
     private String password;
 
     @ManyToMany(cascade = {CascadeType.MERGE,

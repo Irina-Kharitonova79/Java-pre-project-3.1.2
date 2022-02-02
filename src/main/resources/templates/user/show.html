@@ -1,23 +1,97 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
+    <title>User page</title>
+    <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+    <script type="text/javascript" src="/css/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="/css/bootstrap.js"></script>
     <title>User</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #f6f5f5;
+        }
+        .col-2 {
+            height: 100vh;
+        }
+    </style>
 </head>
+
 <body>
-<a href="/logout" id="log_out">LOGOUT</a>
-<br/>
-<br/>
-<p th:text="${user.getName()}">VALUE</p>
-<p th:text="${user.getSurname()}">VALUE</p>
-<p th:text="${user.getAge()}">VALUE</p>
-<p th:text="${user.getEmail()}">VALUE</p>
 
-<!--<a th:href="@{/users/{id}/edit(id=${user.getId()})}">Edit</a>-->
+<!--Верхняя панель (навбар) с именем пользователя и его ролями + ссылка на Logout-->
+<nav class="navbar-expand fixed-top navbar-dark bg-dark">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-<!--<form th:method="DELETE" th:action="@{/users/{id}(id=${user.getId()})}">-->
-<!--    <input type="submit" value="Delete"/>-->
-<!--</form>-->
+        <!--        Имя и фамилия пользователя со списком его ролей в левой части навбара-->
+        <ul class="navbar-nav mr-auto ml-3">
+            <a class="navbar-brand font-weight-bold bg-dark text-white " th:text="${user.getName()}">VALUE</a>
+            <a class="navbar-brand font-weight-bold bg-dark text-white" th:text="${user.getSurname()}">VALUE</a>
+            <a class="navbar-brand bg-dark text-white"> with roles: </a>
+            <a class="navbar-brand bg-dark text-white" th:text="${user.getRoleList()}"></a>
+        </ul>
+
+        <!--        Ссылка на Logout в правой части навбара-->
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!--Боковая панель для обращения к двум вариантам таблицы-->
+<div class="row">
+
+    <div class="col-2 bg-white mt-5 pr-0">
+        <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#OneUserTable">User</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="col-10 pr-3 pl-3">
+        <div class="tab-content mr-3 pr-3 pl-3 px-3 mt-5">
+            <h1 class="h1">User information-page</h1>
+            <div class="card">
+                <h3 class="card-header">About user</h3>
+                <div class="card-body text-center">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Last Name</th>
+                            <th>Age</th>
+                            <th>Password</th>
+                            <th>Role</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td th:text="${user.getId()}"></td>
+                            <td th:text="${user.getName()}"></td>
+                            <td th:text="${user.getSurname()}"></td>
+                            <td th:text="${user.getAge()}"></td>
+                            <td th:text="${user.getEmail()}"></td>
+                            <td th:text="${user.getRoleList()}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-2 bg-white"></div>
+    <div class="col-10 bg-light"></div>
+</div>
+
 
 </body>
 </html>

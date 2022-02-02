@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
@@ -13,7 +12,6 @@ import ru.kata.spring.boot_security.demo.service.RoleServiceImpl;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,8 +62,7 @@ public class UsersController {
     }
 
     @PostMapping("/admin")
-    public String create(@ModelAttribute("user") @Valid User user,
-                         BindingResult bindingResult,
+    public String create(@ModelAttribute("user") User user,
                          @RequestParam(value = "listRoles") String[] listRoles
     ) {
         List<Role> roles = new ArrayList<>();
@@ -74,8 +71,6 @@ public class UsersController {
             roles.add(roleService.getRoleByName(role));
         }
         user.setRoles(roles);
-        if (bindingResult.hasErrors())
-            return "admin/new";
         userService.save(user);
         return "redirect:/admin";
     }
@@ -88,17 +83,13 @@ public class UsersController {
     }
 
     @PatchMapping("/admin/{id}")
-    public String update(@ModelAttribute("user") @Valid User user,
-                         BindingResult bindingResult,
+    public String update(@ModelAttribute("user") User user,
                          @PathVariable("id") int id,
                          @RequestParam(value = "listRoles") String [] listRoles
     ) {
         List<Role> roles = new ArrayList<>();
         for (String role : listRoles) {
             roles.add(roleService.getRoleByName(role));
-        }
-        if (bindingResult.hasErrors()) {
-            return "admin/edit";
         }
         user.setRoles(roles);
         userService.update(id, user);

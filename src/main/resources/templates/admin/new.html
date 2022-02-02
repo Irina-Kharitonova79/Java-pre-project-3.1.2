@@ -3,45 +3,184 @@
       xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>New user</title>
+    <title>Admin panel</title>
+    <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+    <script type="text/javascript" src="/css/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="/css/bootstrap.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            background-color: #f6f5f5;
+        }
+
+        .col-2 {
+            height: 100vh;
+        }
+    </style>
 </head>
 <body>
-<a href="/logout" id="log_out">LOGOUT</a>
-<br/>
-<br/>
-<form th:method="POST" th:action="@{/admin}" th:object="${user}">
-    <label for="name">Enter name: </label>
-    <input type="text" th:field="*{name}" id="name"/>
-    <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>
-    <br/>
-    <label for="surname">Enter surname: </label>
-    <input type="text" th:field="*{surname}" id="surname"/>
-    <div style="color: red" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">Surname error</div>
-    <br/>
-    <label for="age">Enter age: </label>
-    <input type="text" th:field="*{age}" id="age"/>
-    <div style="color: red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age error</div>
-    <br/>
-    <label for="email">Enter email: </label>
-    <input type="text" th:field="*{email}" id="email"/>
-    <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>
-    <br/>
-    <label for="password">Enter password: </label>
-    <input type="text" th:field="*{password}" id="password"/>
-    <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</div>
-    <br/>
-    <label>Roles:
-                <input type="checkbox" name="listRoles"
-                       th:each="role : ${allRoles}"
-                       th:text="${role.getRoleName()}"
-                       th:value="${role.getRoleName()}"
-                       />
-    </label>
-    <br/>
-    <input type="submit" value="Create!"/>
 
-</form>
+<nav class="navbar-expand fixed-top navbar-dark bg-dark">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto ml-3">
+            <a class="navbar-brand font-weight-bold bg-dark text-white " th:text="${user.getName()}">VALUE</a>
+            <a class="navbar-brand font-weight-bold bg-dark text-white" th:text="${user.getSurname()}">VALUE</a>
+            <a class="navbar-brand bg-dark text-white"> with roles: </a>
+            <a class="navbar-brand bg-dark text-white" th:text="${user.getRoleList()}"></a>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+    </div>
+</nav>
 
+
+<div class="row">
+
+    <div class="col-10 bg-light pr-3 pl-3">
+        <div class="tab-content mr-3 pr-3 pl-3 px-3 mt-5">
+
+            <div class="tab-pane fade" id="NewUser">
+                <div class="form-group col-12">
+                    <div class="control-group required">
+                        <div class="card">
+                            <h3 class="card-header">Add new users</h3>
+                            <div class="card-body text-center">
+                                <div class="form mx-auto col-3">
+
+                                    <form th:marginwidth="auto"
+                                          th:method="POST"
+                                          th:action="@{/admin}"
+                                          th:object="${user}">
+
+                                        <div class="form-group">
+                                            <label th:for="name"
+                                                   class="font-weight-bold">First name</label>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   name="name"
+                                                   placeholder="First name"/>
+                                            <div style="color: red" th:if="${#fields.hasErrors('name')}"
+                                                 th:errors="*{name}">Name error
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label th:for="surname"
+                                                   class="font-weight-bold">Last name</label>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   name="surname"
+                                                   placeholder="Last name"/>
+                                            <div style="color: red" th:if="${#fields.hasErrors('surname')}"
+                                                 th:errors="*{surname}">Surname error
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label th:for="age"
+                                                   class="font-weight-bold">Age</label>
+                                            <input type="number"
+                                                   class="form-control"
+                                                   name="age"
+                                                   placeholder="Age"/>
+                                            <div style="color: red" th:if="${#fields.hasErrors('age')}"
+                                                 th:errors="*{age}">Age error
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label th:for="email"
+                                                   class="font-weight-bold">Email</label>
+                                            <input type="email"
+                                                   class="form-control"
+                                                   name="email"
+                                                   placeholder="Email"/>
+                                            <div style="color: red" th:if="${#fields.hasErrors('email')}"
+                                                 th:errors="*{email}">Email error
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label th:for="password"
+                                                   class="font-weight-bold">Password</label>
+                                            <input type="password"
+                                                   class="form-control"
+                                                   name="password"
+                                                   placeholder="Password"/>
+                                            <div style="color: red" th:if="${#fields.hasErrors('password')}"
+                                                 th:errors="*{password}">Password error
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label th:for="roles" class="font-weight-bold">Role</label>
+                                            <div>
+                                                <select class="form-control"
+                                                        name="listRoles"
+                                                        multiple size="2">
+                                                    <div th:each="role : ${allRoles}">
+                                                        <option th:text="${role.getRoleName()}"
+                                                                th:value="${role.getRoleName()}"
+                                                                name="listRoles"/>
+                                                    </div>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-body offset-1">
+                                            <button type="submit" class="btn btn-success">Add new user</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--            <form th:method="POST" th:action="@{/admin}" th:object="${user}">-->
+<!--                <label for="name">Enter name: </label>-->
+<!--                <input type="text" th:field="*{name}" id="name"/>-->
+<!--                <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>-->
+<!--                <br/>-->
+<!--                <label for="surname">Enter surname: </label>-->
+<!--                <input type="text" th:field="*{surname}" id="surname"/>-->
+<!--                <div style="color: red" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">Surname error-->
+<!--                </div>-->
+<!--                <br/>-->
+<!--                <label for="age">Enter age: </label>-->
+<!--                <input type="text" th:field="*{age}" id="age"/>-->
+<!--                <div style="color: red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age error</div>-->
+<!--                <br/>-->
+<!--                <label for="email">Enter email: </label>-->
+<!--                <input type="text" th:field="*{email}" id="email"/>-->
+<!--                <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>-->
+<!--                <br/>-->
+<!--                <label for="password">Enter password: </label>-->
+<!--                <input type="text" th:field="*{password}" id="password"/>-->
+<!--                <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password-->
+<!--                    error-->
+<!--                </div>-->
+<!--                <br/>-->
+<!--                <label>Roles:-->
+<!--                    <input type="checkbox" name="listRoles"-->
+<!--                           th:each="role : ${allRoles}"-->
+<!--                           th:text="${role.getRoleName()}"-->
+<!--                           th:value="${role.getRoleName()}"-->
+<!--                    />-->
+<!--                </label>-->
+<!--                <br/>-->
+<!--                <input type="submit" value="Create!"/>-->
+
+<!--            </form>-->
 
 
 </body>
