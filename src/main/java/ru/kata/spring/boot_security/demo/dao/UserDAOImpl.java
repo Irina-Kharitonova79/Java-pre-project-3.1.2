@@ -1,19 +1,24 @@
 package ru.kata.spring.boot_security.demo.dao;
 
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class UserDAOImpl implements UserDAO{
 
     @PersistenceContext
     EntityManager entityManager;
+
+    @Autowired
+    private RoleDAO roleDAO;
 
     @Override
     public List<User> index() {
@@ -34,6 +39,7 @@ public class UserDAOImpl implements UserDAO{
     @Override
     @Transactional
     public void save(User user) {
+        user.setRoles(getRolesFromDb(user));
         entityManager.persist(user);
     }
 
@@ -46,7 +52,13 @@ public class UserDAOImpl implements UserDAO{
         userToBeUpdate.setAge(updateUser.getAge());
         userToBeUpdate.setEmail(updateUser.getEmail());
         userToBeUpdate.setPassword(updateUser.getPassword());
-        userToBeUpdate.setRoles(updateUser.getRoles());
+        userToBeUpdate.setRoles(getRolesFromDb(updateUser));
+    }
+
+    private List<Role> getRolesFromDb(User user) {
+        return user.getRoles().stream()
+                .map(r -> roleDAO.getRoleByName(r.getRoleName()))
+                .collect(Collectors.toList());
     }
 
     @Override

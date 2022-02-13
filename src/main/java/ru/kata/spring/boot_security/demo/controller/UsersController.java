@@ -30,7 +30,6 @@ public class UsersController {
         this.roleService = roleService;
     }
 
-
     @GetMapping("/admin")
     public String index(Model model, Authentication authentication) {
         model.addAttribute("users", userService.index());

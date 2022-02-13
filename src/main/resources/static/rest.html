@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+
+    <title>REST Example</title>
+
+    <style>
+        body {
+            margin: 0;
+            background-color: #f6f5f5;
+        }
+        .col-2 {
+            height: 100vh;
+            margin-top: 5rem;
+        }
+        .col-10 {
+            margin-top: 5rem;
+        }
+    </style>
+</head>
+<body>
+
+<!--Верхняя панель (навбар) с именем пользователя и его ролями + ссылка на Logout-->
+<nav class="navbar-expand fixed-top navbar-dark bg-dark">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <!--        Имя и фамилия пользователя со списком его ролей в левой части навбара-->
+        <ul class="navbar-nav mr-auto ml-3 mt-2">
+            <a class="navbar-brand font-weight-bold bg-dark text-white" id="userNameLabel">VALUE</a>
+            <a class="navbar-brand font-weight-bold bg-dark text-white" id="userSurnameLabel">VALUE</a>
+            <a class="navbar-brand bg-dark text-white"> with roles: </a>
+            <a class="navbar-brand bg-dark text-white" id="userRolesLabel"></a>
+        </ul>
+
+        <!--        Ссылка на Logout в правой части навбара-->
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+
+    </div>
+</nav>
+
+<!--Боковая панель для обращения к двум вариантам таблицы-->
+<div class="row">
+
+    <div class="col-2 bg-white pr-0">
+        <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#AllUsersTable">Admin</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#OneUserTable" id="userTab">User</a>
+            </li>
+        </ul>
+    </div>
+
+    <!--Выделяем ряды для отображения информации в карточках по группе пользователей-->
+    <div class="col-10 bg-light pr-3 pl-3">
+        <div class="tab-content mr-3 pr-3 pl-3 px-3">
+
+            <!--Панель Админа-->
+            <div class="tab-pane fade show active" id="AllUsersTable">
+
+                <h1>Admin panel</h1>
+                <ul class="nav nav-tabs"> <!--nav-tabs - навигационные вкладки-->
+                    <li class="nav-item"><!--nav-item - элемент навигации-->
+                        <a class="nav-link active" data-toggle="tab" href="#UsersTable" id="SliderUserTable">Users table</a>
+                        <!--nav-link - навигационная ссылка-->
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#NewUser" id="SliderNewUserForm">New User</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content"><!--tab-content - вкладка-контент-->
+                    <div class="tab-pane fade show active" id="UsersTable">
+                        <div class="card">
+                            <h3 class="card-header">All users</h3>
+
+
+                            <div class="pr-3 pl-3 pt-3"><!--внутренняя таблица-->
+                                <table class="table table-striped pl-3 pr-3" id="tableAllUsers"><!--table-striped - полосатый-->
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Age</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="someDefaultModal" tabindex="-1" role="dialog"
+                         aria-labelledby="someDefaultModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+
+                                <div class="modal-body text-center">
+                                </div>
+
+                                <div class="modal-footer">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Вкладка New User-->
+
+                    <div class="tab-pane fade" id="NewUser">
+                        <div class="form-group col-12">
+                            <div class="control-group required">
+                                <div class="card">
+                                    <h3 class="card-header">Add new users</h3>
+                                    <div class="card-body text-center">
+                                        <div class="form mx-auto col-3">
+
+                                            <form id="defaultSomeForm" data-hidden=true>
+
+                                                <div class="form-group">
+                                                    <label class="font-weight-bold">First name</label>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           id="addNewUserName"
+                                                           placeholder="First name"/>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="font-weight-bold">Last name</label>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           id="addNewUserSurname"
+                                                           placeholder="Last name"/>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="font-weight-bold">Age</label>
+                                                    <input type="number"
+                                                           class="form-control"
+                                                           id="addNewUserAge"
+                                                           placeholder="Age"/>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="font-weight-bold">Email</label>
+                                                    <input type="email"
+                                                           class="form-control"
+                                                           id="addNewUserEmail"
+                                                           placeholder="Email"/>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="font-weight-bold">Password</label>
+                                                    <input type="password"
+                                                           class="form-control"
+                                                           id="addNewUserPassword"
+                                                           placeholder="Password"/>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="font-weight-bold">Role</label>
+                                                    <div id="addNewUserRoleSelector"></div>
+                                                </div>
+
+                                            </form>
+
+                                                <div class="modal-body offset-1">
+                                                    <button type="submit" class="btn btn-success" id="addNewUserButton">
+                                                        Add new user</button>
+                                                </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+            <!-- Панель Юзера-->
+
+            <div class="tab-pane fade" id="OneUserTable">
+                <h1 class="h1">User information-page</h1>
+
+                <div class="card">
+                    <h3 class="card-header">About user</h3>
+                    <div class="card-body text-center">
+                        <table class="table table-striped" id="tableOneUser">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Last Name</th>
+                                <th>Age</th>
+                                <th>Password</th>
+                                <th>Role</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript" src="/css/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="/css/bootstrap.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
